@@ -1,353 +1,221 @@
-local pupilState = 0
+local abotBeatRandom1 = 1
+local abotBeatRandom2 = 1
+local abotBeatRandom3 = 1
+local abotBeatRandom4 = 1
+local abotBeatRandom5 = 1
+local abotBeatRandom6 = 1
+local abotBeatRandom7 = 1
+local health = 1
+local abotEyes = 0
+local viz1Value = 1
+local viz2Value = 1
+local viz3Value = 1
+local viz4Value = 1
+local viz5Value = 1
+local viz6Value = 1
+local viz7Value = 1
+local knifeUp = false
 
-local PUPIL_STATE_NORMAL = 0
-local PUPIL_STATE_LEFT = 1
+function onCreate()
+    precacheImage('characters/Pico_Death')
 
-function onCreatePost()
-luaDebugMode = true;
-makeLuaSprite('stereoBG', "characters/abot/stereoBG", 0, 0);
+	makeLuaSprite('abotEyeBack', 'empty', getProperty('gf.x') -80, getProperty('gf.y') +550);
+	makeGraphic('abotEyeBack', 110, 70, 'FFFFFF');
 
-makeLuaSprite('eyeWhites')
-makeGraphic('eyeWhites', 160, 60, 'FFFFFF')
+	makeFlxAnimateSprite('abotEyes', getProperty('gf.x') -76, getProperty('gf.y') +550, 'characters/abot/systemEyes')
+	addAnimationBySymbolIndices('abotEyes', 'l', 'a bot eyes lookin', {0, 1, 2, 3, 10, 11, 12, 13}, 24, false)
+	addAnimationBySymbolIndices('abotEyes', 'r', 'a bot eyes lookin', {13, 12, 11, 10, 3, 2, 1, 0}, 24, false)
 
-makeFlxAnimateSprite('pupil', 0, 0)
-loadAnimateAtlas('pupil',"characters/abot/systemEyes")
-setProperty('pupil.x',getProperty('gf.x'))
-setProperty('pupil.y',getProperty('gf.y'))
+	makeLuaSprite('abotBG', 'characters/abot/stereoBG', getProperty('gf.x') +18, getProperty('gf.y') +318);
+	scaleObject('abotBG', 1.05, 1.05);
 
-makeFlxAnimateSprite('abot', 0, 0)
-loadAnimateAtlas('abot',"characters/abot/abotSystem")
-setProperty('abot.x',getProperty('gf.x'))
-setProperty('abot.y',getProperty('gf.y'))
+	makeAnimatedLuaSprite('abotViz1', 'aBotViz', getProperty('gf.x') +66, getProperty('gf.y') +390);
+	addAnimationByIndices('abotViz1', 'viz6', 'viz1', {0}, 24, false);
+	addAnimationByIndices('abotViz1', 'viz5', 'viz1', {1}, 24, false);
+	addAnimationByIndices('abotViz1', 'viz4', 'viz1', {2}, 24, false);
+	addAnimationByIndices('abotViz1', 'viz3', 'viz1', {3}, 24, false);
+	addAnimationByIndices('abotViz1', 'viz2', 'viz1', {4}, 24, false);
+	addAnimationByIndices('abotViz1', 'viz1', 'viz1', {5}, 24, false);
+	setProperty('abotViz1.flipX', false);
+	scaleObject('abotViz1', 1, 1);
 
-visFrms = "aBotViz"
-visStr = "viz"
+	makeAnimatedLuaSprite('abotViz2', 'aBotViz', getProperty('gf.x') +128, getProperty('gf.y') +383);
+	addAnimationByIndices('abotViz2', 'viz6', 'viz2', {0}, 24, false);
+	addAnimationByIndices('abotViz2', 'viz5', 'viz2', {1}, 24, false);
+	addAnimationByIndices('abotViz2', 'viz4', 'viz2', {2}, 24, false);
+	addAnimationByIndices('abotViz2', 'viz3', 'viz2', {3}, 24, false);
+	addAnimationByIndices('abotViz2', 'viz2', 'viz2', {4}, 24, false);
+	addAnimationByIndices('abotViz2', 'viz1', 'viz2', {5}, 24, false);
+	setProperty('abotViz2.flipX', false);
+	scaleObject('abotViz2', 1, 1);
 
-positionX = {0, 59, 56, 66, 54, 52, 51}
-positionY = {0, -8, -3.5, -0.4, 0.5, 4.7, 7}
+	makeAnimatedLuaSprite('abotViz3', 'aBotViz', getProperty('gf.x') +185, getProperty('gf.y') +380);
+	addAnimationByIndices('abotViz3', 'viz6', 'viz3', {0}, 24, false);
+	addAnimationByIndices('abotViz3', 'viz5', 'viz3', {1}, 24, false);
+	addAnimationByIndices('abotViz3', 'viz4', 'viz3', {2}, 24, false);
+	addAnimationByIndices('abotViz3', 'viz3', 'viz3', {3}, 24, false);
+	addAnimationByIndices('abotViz3', 'viz2', 'viz3', {4}, 24, false);
+	addAnimationByIndices('abotViz3', 'viz1', 'viz3', {5}, 24, false);
+	setProperty('abotViz3.flipX', false);
+	scaleObject('abotViz3', 1, 1);
 
-makeAnimatedLuaSprite('viz1', visFrms, 0, 0)
+	makeAnimatedLuaSprite('abotViz4', 'aBotViz', getProperty('gf.x') +251, getProperty('gf.y') +380);
+	addAnimationByIndices('abotViz4', 'viz6', 'viz4', {0}, 24, false);
+	addAnimationByIndices('abotViz4', 'viz5', 'viz4', {1}, 24, false);
+	addAnimationByIndices('abotViz4', 'viz4', 'viz4', {2}, 24, false);
+	addAnimationByIndices('abotViz4', 'viz3', 'viz4', {3}, 24, false);
+	addAnimationByIndices('abotViz4', 'viz2', 'viz4', {4}, 24, false);
+	addAnimationByIndices('abotViz4', 'viz1', 'viz4', {5}, 24, false);
+	setProperty('abotViz4.flipX', false);
+	scaleObject('abotViz4', 1, 1);
 
-addAnimationByPrefix('viz1', 'VIZ', visStr..1, 0);
-playAnim('viz1', 'VIZ', false, false, 6);
+	makeAnimatedLuaSprite('abotViz5', 'aBotViz', getProperty('gf.x') +308, getProperty('gf.y') +380);
+	addAnimationByIndices('abotViz5', 'viz6', 'viz5', {0}, 24, false);
+	addAnimationByIndices('abotViz5', 'viz5', 'viz5', {1}, 24, false);
+	addAnimationByIndices('abotViz5', 'viz4', 'viz5', {2}, 24, false);
+	addAnimationByIndices('abotViz5', 'viz3', 'viz5', {3}, 24, false);
+	addAnimationByIndices('abotViz5', 'viz2', 'viz5', {4}, 24, false);
+	addAnimationByIndices('abotViz5', 'viz1', 'viz5', {5}, 24, false);
+	setProperty('abotViz5.flipX', false);
+	scaleObject('abotViz5', 1, 1);
 
-makeAnimatedLuaSprite('viz2', visFrms, 59, -8)
+	makeAnimatedLuaSprite('abotViz6', 'aBotViz', getProperty('gf.x') +364, getProperty('gf.y') +385);
+	addAnimationByIndices('abotViz6', 'viz6', 'viz6', {0}, 24, false);
+	addAnimationByIndices('abotViz6', 'viz5', 'viz6', {1}, 24, false);
+	addAnimationByIndices('abotViz6', 'viz4', 'viz6', {2}, 24, false);
+	addAnimationByIndices('abotViz6', 'viz3', 'viz6', {3}, 24, false);
+	addAnimationByIndices('abotViz6', 'viz2', 'viz6', {4}, 24, false);
+	addAnimationByIndices('abotViz6', 'viz1', 'viz6', {5}, 24, false);
+	setProperty('abotViz6.flipX', false);
+	scaleObject('abotViz6', 1, 1);
 
-addAnimationByPrefix('viz2', 'VIZ', visStr..2, 0);
-playAnim('viz2', 'VIZ', false, false, 6);
+	makeAnimatedLuaSprite('abotViz7', 'aBotViz', getProperty('gf.x') +416, getProperty('gf.y') +393);
+	addAnimationByIndices('abotViz7', 'viz6', 'viz7', {0}, 24, false);
+	addAnimationByIndices('abotViz7', 'viz5', 'viz7', {1}, 24, false);
+	addAnimationByIndices('abotViz7', 'viz4', 'viz7', {2}, 24, false);
+	addAnimationByIndices('abotViz7', 'viz3', 'viz7', {3}, 24, false);
+	addAnimationByIndices('abotViz7', 'viz2', 'viz7', {4}, 24, false);
+	addAnimationByIndices('abotViz7', 'viz1', 'viz7', {5}, 24, false);
+	setProperty('abotViz7.flipX', false);
+	scaleObject('abotViz7', 1, 1);
 
-makeAnimatedLuaSprite('viz3', visFrms, 115, -11.5)
+	makeFlxAnimateSprite('abot', getProperty('gf.x') -133, getProperty('gf.y') +310, 'characters/abot/abotSystem')
+	addAnimationBySymbolIndices('abot', 'i', 'Abot System', {0, 1, 2, 3, 4}, 24, false)
+	setProperty('abot.alpha', 1);
 
-addAnimationByPrefix('viz3', 'VIZ', visStr..3, 0);
-playAnim('viz3', 'VIZ', false, false, 6);
+	addLuaSprite('abotEyeBack', false);
+	addLuaSprite('abotEyes', false);
+	addLuaSprite('abotBG', false);
+	addLuaSprite('abotViz1', false);
+	addLuaSprite('abotViz2', false);
+	addLuaSprite('abotViz3', false);
+	addLuaSprite('abotViz4', false);
+	addLuaSprite('abotViz5', false);
+	addLuaSprite('abotViz6', false);
+	addLuaSprite('abotViz7', false);
+	addLuaSprite('abot', false);
 
-makeAnimatedLuaSprite('viz4', visFrms, 181, -11.9)
-
-addAnimationByPrefix('viz4', 'VIZ', visStr..4, 0);
-playAnim('viz4', 'VIZ', false, false, 6);
-
-makeAnimatedLuaSprite('viz5', visFrms, 235, -11.4)
-
-addAnimationByPrefix('viz5', 'VIZ', visStr..5, 0);
-playAnim('viz5', 'VIZ', false, false, 6);
-
-makeAnimatedLuaSprite('viz6', visFrms, 287, -6.7)
-
-addAnimationByPrefix('viz6', 'VIZ', visStr..6, 0);
-playAnim('viz6', 'VIZ', false, false, 6);
-
-makeAnimatedLuaSprite('viz7', visFrms, 338, 0.3)
-
-addAnimationByPrefix('viz7', 'VIZ', visStr..7, 0);
-playAnim('viz7', 'VIZ', false, false, 6);
 end
 
-local refershedLol = false
-local VULTURE_THRESHOLD = 0.25 * 2
-local STATE_DEFAULT = 0
-local STATE_PRE_RAISE = 1
-local STATE_RAISE = 2
-local STATE_READY = 3
-local STATE_LOWER = 4
-local currentState = STATE_DEFAULT
-local MIN_BLINK_DELAY = 3
-local MAX_BLINK_DELAY = 7
-local blinkCountdown = MIN_BLINK_DELAY
-
-local start = false
-
-function onUpdatePost()
-setProperty('abot.visible',getProperty('gf.visible'))
-setProperty('eyeWhites.visible',getProperty('gf.visible'))
-setProperty('pupil.visible',getProperty('gf.visible'))
-setProperty('stereoBG.visible',getProperty('gf.visible'))
-for i = 1,7 do
-setProperty('viz'..i..'.visible',getProperty('gf.visible'))
+function onUpdate()
+	playAnim('abotViz1', 'viz'..viz1Value);
+	playAnim('abotViz2', 'viz'..viz2Value); 
+	playAnim('abotViz3', 'viz'..viz3Value); 
+	playAnim('abotViz4', 'viz'..viz4Value); 
+	playAnim('abotViz5', 'viz'..viz5Value);
+	playAnim('abotViz6', 'viz'..viz6Value); 
+	playAnim('abotViz7', 'viz'..viz7Value);
+	if songName ~= "Blazin'" then
+		if getProperty('health') <= 0.25 and not knifeUp then
+			knifeUp = true
+			playAnim('gf', 'raiseKnife', false);
+			runTimer('raiseKnifeAnim', (1/24)*19);
+			triggerEvent('Alt Idle Animation', 'gf', '-alt')
+		elseif getProperty('health') >= 0.251 and knifeUp then
+			knifeUp = false
+			triggerEvent('Alt Idle Animation', 'gf', '')
+			playAnim('gf', 'lowerKnife', false);
+			setProperty('gf.specialAnim', true);
+		end
+	end
 end
-
-if start then
-drawFFT()
-end
-
-if getProperty('pupil.anim.isPlaying') then
-if pupilState == PUPIL_STATE_NORMAL then
-if getProperty('pupil.anim.curFrame') >= 17 then
-pupilState = PUPIL_STATE_LEFT
-runHaxeCode([[
-game.getLuaObject('pupil').anim.pause();
-]])
-end
-elseif pupilState == PUPIL_STATE_LEFT then
-if getProperty('pupil.anim.curFrame') >= 31 then
-pupilState = PUPIL_STATE_NORMAL
-runHaxeCode([[
-game.getLuaObject('pupil').anim.pause();
-]])
-end
-end
-end
-
-if not refershedLol then
-setProperty('abot.x',getProperty('gf.x') - 100)
-setProperty('abot.y',getProperty('gf.y') + 316)
-
-for i = 1,7 do
-setProperty('viz'..i..'.x',getProperty('viz'..i..'.x') + getProperty('gf.x') + 100)
-setProperty('viz'..i..'.y',getProperty('viz'..i..'.y') + getProperty('gf.y') + 400)
-end
-
-setProperty('abot.x',getProperty('gf.x') - 100)
-setProperty('abot.y',getProperty('gf.y') + 316)
-
-setProperty('eyeWhites.x',getProperty('abot.x') + 40)
-setProperty('eyeWhites.y',getProperty('abot.y') + 250)
-
-setProperty('pupil.x',getProperty('gf.x') - 607)
-setProperty('pupil.y',getProperty('gf.y') - 176)
-
-setProperty('stereoBG.x',getProperty('abot.x') + 150)
-setProperty('stereoBG.y',getProperty('abot.y') + 30)
-
-addLuaSprite('stereoBG', false);
-for i = 1,7 do
-addLuaSprite('viz'..i, false)
-end
-addLuaSprite('eyeWhites', false);
-addLuaSprite('pupil', false);
-addLuaSprite('abot', false);
-
-refershedLol = true
-end
-
-if shouldTransitionState() then
-transitionState()
-end
-
-if getProperty('gf.animation.curAnim.finished') then
-onAnimationFinished(getProperty('gf.animation.curAnim.name'))
-end
-
-if getProperty('gf.animation.curAnim') ~= nil then
-onAnimationFrame(getProperty('gf.animation.curAnim.name'), getProperty('gf.animation.curAnim.curFrame'), getProperty('gf.animation.curAnim.frameIndex'))
-end
-end
-
-function onSongStart()
-start = true
-end
-
-local gfSpeed = 1;
 
 function onBeatHit()
-if getProperty('gfSpeed') ~= 10000000 then
-gfSpeed = getProperty('gfSpeed');
-setProperty('gfSpeed',10000000)
+	playAnim('abot', 'i');
+	if curBeat %2 == 0 then
+	end
 end
-if not getProperty('gf.specialAnim') then
-if getProperty('gf') ~= nil and curBeat % math.floor(gfSpeed * getProperty('gf.danceEveryNumBeats')) == 0 and not getProperty('gf.stunned') then
-dance(true)
+
+function onStepHit()
+	abotBeatRandom1 = getRandomInt(1,5);
+	abotBeatRandom2 = getRandomInt(1,5);
+	abotBeatRandom3 = getRandomInt(1,5);
+	abotBeatRandom4 = getRandomInt(1,5);
+	abotBeatRandom5 = getRandomInt(1,5);
+	abotBeatRandom6 = getRandomInt(1,5);
+	abotBeatRandom7 = getRandomInt(1,5);
+	if abotBeatRandom1 <= 1 and viz1Value <= 5 then
+		viz1Value = viz1Value + getRandomInt(1,2)
+	elseif abotBeatRandom1 == 5 and viz1Value >= 1 or abotBeatRandom1 >= 2 and viz1Value >= 6 then
+		viz1Value = viz1Value - getRandomInt(1,2)
+	end
+	if abotBeatRandom2 <= 1 and viz2Value <= 5 then
+		viz2Value = viz2Value + getRandomInt(1,2)
+	elseif abotBeatRandom2 == 5 and viz2Value >= 1 or abotBeatRandom2 >= 2 and viz2Value >= 6 then
+		viz2Value = viz2Value - getRandomInt(1,2)
+	end
+	if abotBeatRandom3 <= 1 and viz3Value <= 5 then
+		viz3Value = viz3Value + getRandomInt(1,2)
+	elseif abotBeatRandom3 == 5 and viz3Value >= 1 or abotBeatRandom3 >= 2 and viz3Value >= 6 then
+		viz3Value = viz3Value - getRandomInt(1,2)
+	end
+	if abotBeatRandom4 <= 1 and viz4Value <= 5 then
+		viz4Value = viz4Value + getRandomInt(1,2)
+	elseif abotBeatRandom4 == 5 and viz4Value >= 1 or abotBeatRandom4 >= 2 and viz4Value >= 6 then
+		viz4Value = viz4Value - getRandomInt(1,2)
+	end
+	if abotBeatRandom5 <= 1 and viz5Value <= 5 then
+		viz5Value = viz5Value + getRandomInt(1,2)
+	elseif abotBeatRandom5 == 5 and viz5Value >= 1 or abotBeatRandom5 >= 2 and viz5Value >= 6 then
+		viz5Value = viz5Value - getRandomInt(1,2)
+	end
+	if abotBeatRandom6 <= 1 and viz6Value <= 5 then
+		viz6Value = viz6Value + getRandomInt(1,2)
+	elseif abotBeatRandom6 == 5 and viz6Value >= 1 or abotBeatRandom6 >= 2 and viz6Value >= 6 then
+		viz6Value = viz6Value - getRandomInt(1,2)
+	end 
+	if abotBeatRandom7 <= 1 and viz7Value <= 5 then
+		viz7Value = viz7Value + getRandomInt(1,2)
+	elseif abotBeatRandom7 == 5 and viz7Value >= 1 or abotBeatRandom7 >= 2 and viz7Value >= 6 then
+		viz7Value = viz7Value - getRandomInt(1,2)
+	end
 end
-end
+
+function onTimerCompleted(tag, loops, loopsLeft)
+	if tag == 'abotEyesLeft1' and abotEyes == 1 then
+		abotEyes = 0
+		playAnim('abotEyes', 'l');
+	end
+	if tag == 'abotEyesRight1' and abotEyes == 0 then
+		abotEyes = 1
+		playAnim('abotEyes', 'r');
+	end
 end
 
 function onMoveCamera(focus)
-if focus == "boyfriend" then
-movePupilsRight()
-elseif focus == "dad" then
-movePupilsLeft()
-end
-end
-
-function goodNoteHit(id, direction, noteType, isSustainNote)
-if noteType == "weekend-1-lightcan" then
-movePupilsLeft()
-elseif noteType == "weekend-1-kickcan" or noteType == "weekend-1-kneecan" or noteType == "weekend-1-cockgun" then
-movePupilsRight()
-elseif noteType == "weekend-1-firegun" then
-else
-end
+	if focus == 'dad' then
+		runTimer('abotEyesLeft1', 0.2);
+	elseif focus == 'boyfriend' or 'gf' then
+		runTimer('abotEyesRight1', 0.2);
+	end
 end
 
-function opponentNoteHit(id, direction, noteType, isSustainNote)
-if noteType == "weekend-1-lightcan" then
-movePupilsLeft()
-elseif noteType == "weekend-1-kickcan" or noteType == "weekend-1-kneecan" or noteType == "weekend-1-cockgun" then
-movePupilsRight()
-elseif noteType == "weekend-1-firegun" then
-else
+function onEvent(name, value1, value2)
+    if name == 'Focus Camera' then
+        if value1 == '1' then
+			runTimer('abotEyesLeft1', 0.2);
+        elseif value1 == '2' or '3' then
+			runTimer('abotEyesRight1', 0.2);
+        end
+    end
 end
-end
-
-function noteMiss(id, direction, noteType, isSustainNote)
-if noteType == "weekend-1-lightcan" then
-movePupilsLeft()
-elseif noteType == "weekend-1-kickcan" or noteType == "weekend-1-kneecan" or noteType == "weekend-1-cockgun" then
-movePupilsRight()
-elseif noteType == "weekend-1-firegun" then
-else
-end
-end
-
-local hasDanced = true
-
-function dance(forceRestart)
-if currentState == STATE_DEFAULT then
-if hasDanced then
-playAnim('gf',"danceRight", forceRestart)
-else
-playAnim('gf',"danceLeft", forceRestart)
-end
-hasDanced = not hasDanced
-elseif currentState == STATE_PRE_RAISE then
-playAnim('gf',"danceLeft", false)
-hasDanced = false
-elseif currentState == STATE_READY then
-if blinkCountdown == 0 then
-playAnim('gf',"idleKnife", false)
-blinkCountdown = getRandomInt(MIN_BLINK_DELAY, MAX_BLINK_DELAY)
-else
-blinkCountdown = blinkCountdown - 1
-end
-else
-end
-end
-
-function movePupilsLeft()
-if pupilState == PUPIL_STATE_LEFT then return end
-playAnim('pupil',"")
-setProperty('pupil.anim.curFrame',0)
-end
-
-function movePupilsRight()
-if pupilState == PUPIL_STATE_NORMAL then return end
-playAnim('pupil',"")
-setProperty('pupil.anim.curFrame',17)
-end
-
-function shouldTransitionState()
-return getProperty('boyfriend.curCharacter') ~= "pico-blazin"
-end
-
-local animationFinished = false
-
-function onAnimationFinished(name)
- if currentState == STATE_RAISE then
-if name == "raiseKnife" then
-animationFinished = true
-transitionState()
-end
-elseif currentState == STATE_LOWER then
-if name == "lowerKnife" then
-animationFinished = true
-transitionState()
-end
-else
-end
-end
-
-function onAnimationFrame(name, frameNumber, frameIndex)
-if currentState == STATE_PRE_RAISE then
-if name == "danceLeft" and frameNumber == 14 then
-animationFinished = true
-transitionState()
-end
-else
-end
-end
-
-function transitionState()
-if currentState == STATE_DEFAULT then
-if getProperty('health') <= VULTURE_THRESHOLD then
-currentState = STATE_PRE_RAISE
-else
-currentState = STATE_DEFAULT
-end
-elseif currentState == STATE_PRE_RAISE then
-if getProperty('health') > VULTURE_THRESHOLD then
-currentState = STATE_DEFAULT
-elseif animationFinished then
-currentState = STATE_RAISE
-playAnim('gf',"raiseKnife")
-animationFinished = false
-end
-elseif currentState == STATE_RAISE then
-if animationFinished then
-currentState = STATE_READY
-animationFinished = false
-end
-elseif currentState == STATE_READY then
-if getProperty('health') > VULTURE_THRESHOLD then
-currentState = STATE_LOWER
-playAnim('gf',"lowerKnife")
-end
-elseif currentState == STATE_LOWER then
-if animationFinished then
-currentState = STATE_DEFAULT
-animationFinished = false
-end
-else
-currentState = STATE_DEFAULT
-end
-end
-
-function drawFFT()
-snd = getPropertyFromClass('flixel.FlxG', 'sound.music')
-currentTime = getPropertyFromClass('flixel.FlxG', 'sound.music.time')
-
-buffer = getPropertyFromClass('flixel.FlxG', 'sound.music._sound.__buffer')
-bytes = getPropertyFromClass('flixel.FlxG', 'sound.music._sound.__buffer.data.buffer')
-
-length = #bytes - 1
-khz = runHaxeCode([[(FlxG.sound.music._sound.__buffer.sampleRate / 1000)]])
-channels = runHaxeCode([[FlxG.sound.music._sound.__buffer.channels]])
-stereo = channels > 1
-
-index = math.floor(currentTime * khz)
-
-sampl = {}
-
-for i = index, index + 7 do
-if i >= 0 then
-byte = runHaxeCode([[FlxG.sound.music._sound.__buffer.data.buffer.getUInt16(]]..i..[[ * ]]..channels..[[ * 2)]])
-
-if byte > 65535 / 2 then
-byte = byte - 65535
-end
-
-table.insert(sampl, byte / 65535 * 10)
-end
-end
-
-for i = 1, 7 do
-animFrame = math.floor(sampl[i] * 5)
-animFrame = math.floor(animFrame * getPropertyFromClass('flixel.FlxG', 'sound.volume'))
-
-animFrame = math.floor(math.min(5, animFrame))
-animFrame = math.floor(math.max(0, animFrame))
-
-animFrame = math.abs(animFrame - 5)
-
-setProperty('viz'..i..'.animation.curAnim.curFrame',animFrame)
-end
-end
-
